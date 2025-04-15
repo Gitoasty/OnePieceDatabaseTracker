@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta name="title" content="Contacts">
+    <meta name="keywords" content="One Piece, Contacts, Contact Page">
+    <meta name="author" content="Matej Miklin">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact page</title>
+    <link rel="icon" type="image/png" href="../images/icon.png">
+    <link rel="stylesheet" media="screen" href="../pretty.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <header class="head">
+        <div id="banner"></div>
+        <div class="butts" id="butts">
+            <h1>
+                One Piece Wiki
+            </h1>
+            <br>
+            <div class="butts1">
+                <a href="../characters.html">
+                    Main page
+                </a>
+                <a href="contact.html">
+                    <abbr title="ovdje">
+                        Contacts
+                    </abbr>
+                </a>
+                <a href="about.html">
+                    About
+                </a>
+                <a href="news.html">
+                    News
+                </a>
+                <a href="store.html">
+                    Store
+                </a>
+            </div>
+        </div>
+    </header>
+    <br>
+    <section id="form_sec">
+        <div id="form_bg"></div>
+        <form name="contact-form", id="contact-form">
+            <table>
+                <tr>
+                    <td>
+                        <div>
+                            <strong>
+                                <label>
+                                    Ime i prezime:
+                                </label>
+                            </strong>
+                        </div>
+                    </td>
+                    <td>
+                        <input type="text" id="name" name="name" placeholder="Ime i prezime" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div>
+                            <strong>
+                                <label>
+                                    Mail:
+                                </label>
+                            </strong>
+                        </div>
+                    </td>
+                    <td>
+                        <input type="email" id="mail" name="mail" placeholder="mail@domain" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div>
+                            <strong>
+                                <label>
+                                    Ocjena stranice:
+                                </label>
+                            </strong>
+                        </div>
+                    </td>
+                    <td>
+                        <select id="broj" name="broj">
+                            <option>
+                                1
+                            </option>
+                            <option>
+                                2
+                            </option>
+                            <option selected="selected">
+                                3
+                            </option>
+                            <option>
+                                4
+                            </option>
+                            <option>
+                                5
+                            </option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input align="right" type="reset" value="Poništi">
+                    </td>
+                    <td>
+                        <input type="submit" value="Pošalji " formaction="/file.html">
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </section>
+    <br>
+    <a id="mails" href="mailto:matej.miklin@tvz.hr?subject=Upit o One Piece stranici&body=Pitanje vezano za One Piece" target="_top">
+        Slanje maila ovdje :)
+    </a>
+    <br>
+    <section class="sec" style="margin-top: 50px; margin-bottom: 25px; display: flex; flex-direction: row; justify-content: center;">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d122310.7326530882!2d139.12624981314787!3d36.3345377201!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601ee752b92f9f4f%3A0x990168e037ad9de8!2zT05FIFBJRUNFIOm6puOCj-OCieOCueODiOOCoiDkvIrli6LltI4!5e0!3m2!1sen!2shr!4v1717720021565!5m2!1sen!2shr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </section>
+    <section class="sec">
+        <div style="margin-top: 50px; height: 10px; display: flex; flex-direction: row; justify-content: space-around; visibility: hidden;">
+            <!--Font Awesome ne odgovara tematici ovih stranica, no svejedno sam ga uključio.-->
+            <i class="fa fa-solid fa-ship fa-5x"></i>
+            <i class="fa fa-solid fa-binoculars fa-5x"></i>
+            <i class="fa fa-solid fa-book fa-5x"></i>
+        </div>
+    </section>
+    <footer>
+        <h3>
+            Matej Miklin, 0246122414
+        </h3>
+    </footer>
+</body>
+</html>

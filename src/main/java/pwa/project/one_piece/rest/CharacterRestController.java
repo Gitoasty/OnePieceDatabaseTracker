@@ -14,12 +14,12 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/character")
-public class CharacterController {
+public class CharacterRestController {
 
     @Autowired
     private CharacterService characterService;
 
-    Logger logger = LoggerFactory.getLogger(CharacterController.class);
+    Logger logger = LoggerFactory.getLogger(CharacterRestController.class);
 
     @PostMapping("/save")
     public ResponseEntity<Character> save(@RequestBody Character character) {

@@ -14,12 +14,12 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/fruit")
-public class FruitController {
+public class FruitRestController {
 
     @Autowired
     private FruitService fruitService;
 
-    Logger logger = LoggerFactory.getLogger(FruitController.class);
+    Logger logger = LoggerFactory.getLogger(FruitRestController.class);
 
     @PostMapping("/save")
     public ResponseEntity<Fruit> save(@RequestBody Fruit fruit) {
