@@ -34,16 +34,26 @@ public class CharacterController {
         return characterService.getAllUsers();
     }
 
-    @GetMapping("/{id}")
-    public Optional<Character> findStudentsOld(@PathVariable Integer id) {
-        logger.info("Find characters with id: " + id);
+    @GetMapping("/id/{id}")
+    public Optional<Character> findByID(@PathVariable Integer id) {
+        logger.info("Find the character with id: " + id);
         return characterService.getUserById(id);
     }
 
 
-    @GetMapping("/{name}")
-    public List<Character> findAllWithName(@RequestParam String name) {
+    @GetMapping("/name/{name}")
+    public List<Character> findAllWithName(@PathVariable String name) {
         return characterService.searchCharactersByName(name);
+    }
+
+    @GetMapping("/withFruits")
+    public List<Character> findAllWithFruits() {
+        return characterService.findWithFruit();
+    }
+
+    @GetMapping("/withoutFruits")
+    public List<Character> findAllWithoutFruits() {
+        return characterService.findWithoutFruit();
     }
 
     @DeleteMapping("/delete/{id}")

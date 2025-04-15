@@ -2,6 +2,7 @@ package pwa.project.one_piece.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +15,7 @@ public class Character {
     @Column(name="id", nullable = false)
     private Integer id;
 
+    @Getter
     @Column(name="name", nullable = false)
     private String name;
 
@@ -34,4 +36,8 @@ public class Character {
 
     @OneToMany(mappedBy="character", cascade=CascadeType.ALL, orphanRemoval = true)
     private List<Fruit> fruits = new ArrayList<>();
+
+    public boolean masterGetter() {
+        return master;
+    }
 }

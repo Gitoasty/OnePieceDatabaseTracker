@@ -4,6 +4,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import pwa.project.one_piece.entity.Fruit;
 
+import java.util.List;
+
 @Repository
 public interface FruitRepository extends JpaRepository<Fruit, Integer> {
+
+    List<Fruit> findByNameIgnoreCase(String name);
+
+    List<Fruit> findByCharacterIsNotNull();
+
+    List<Fruit> findByCharacterIsNull();
 }

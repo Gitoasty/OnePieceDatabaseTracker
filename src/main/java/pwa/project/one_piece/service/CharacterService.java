@@ -39,4 +39,12 @@ public class CharacterService {
     public void delete(Integer id) {
         characterRepository.deleteById(id);
     }
+
+    public List<Character> findWithFruit() {
+        return characterRepository.findCharactersWithFruits();
+    }
+
+    public List<Character> findWithoutFruit() {
+        return characterRepository.findCharactersWithoutFruits();
+    }
 }
