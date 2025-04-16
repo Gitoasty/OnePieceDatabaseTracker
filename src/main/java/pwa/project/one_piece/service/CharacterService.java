@@ -95,14 +95,14 @@ public class CharacterService {
 
             for (int i = 1; i < rows.size(); i++) { // skip header row
                 Elements cols = rows.get(i).select("td");
-                System.out.println(cols);
+                System.out.println(cols.size());
 
-                if (cols.size() >= 5) {
-                    String name = cols.get(0).text();
-                    String chapter = cols.get(1).text();
-                    String episode = cols.get(2).text();
-                    String year = cols.get(3).text();
-                    String note = cols.get(4).text();
+                if (cols.size() >= 6) {
+                    String name = cols.get(1).text();
+                    String chapter = cols.get(2).text();
+                    String episode = cols.get(3).text();
+                    String year = cols.get(4).text();
+                    String note = cols.get(5).text();
 
                     Character character = new Character();
                     character.setName(name);
@@ -114,7 +114,6 @@ public class CharacterService {
                 }
             }
         }
-        System.out.println(characters);
 
         SslUtil.reenableSslVerification();
 
