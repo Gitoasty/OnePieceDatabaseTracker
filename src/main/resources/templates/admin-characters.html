@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>One Piece Characters</title>
+  <style>
+    table {
+      width: 80%;
+      margin: 20px auto;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 12px;
+      border: 1px solid #ccc;
+      text-align: left;
+    }
+    th {
+      background-color: #f4a261;
+    }
+    tr:nth-child(even) {
+      background-color: #fdf5e6;
+    }
+  </style>
+</head>
+<body class="main">
+<header class="head">
+  <div id="banner"></div>
+  <div class="butts" id="butts">
+    <h1>
+      One Piece Wiki
+    </h1>
+    <br>
+    <div class="butts1">
+      <a href="admin-main">
+        Main page
+      </a>
+      <a href="contact">
+        Contacts
+      </a>
+      <a href="admin-contact">
+        About
+      </a>
+      <a href="news.html">
+        News
+      </a>
+      <a href="api/character/all">
+        Store
+      </a>
+    </div>
+  </div>
+</header>
+  <h1 style="text-align:center;">One Piece Characters</h1>
+
+  <table id="chars">
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Chapter Introduced</th>
+      <th>Episode Introduced</th>
+      <th>Year Introduced</th>
+      <th>Note</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="character : ${characterList}">
+      <td th:text="${character.getName()}">1</td>
+      <td th:text="${character.getChapterIntroduced()}">Monkey D. Luffy</td>
+      <td th:text="${character.getEpisodeIntroduced()}">Gomu Gomu no Mi</td>
+      <td th:text="${character.getYearIntroduced()}">Captain</td>
+      <td th:text="${character.getNote()}">Captain</td>
+      <!-- Adjust these fields based on your Character DTO/model -->
+    </tr>
+    </tbody>
+  </table>
+</body>
+</html>

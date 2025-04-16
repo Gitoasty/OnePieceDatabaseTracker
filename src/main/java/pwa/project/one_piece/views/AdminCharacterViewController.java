@@ -5,12 +5,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import pwa.project.one_piece.rest.CharacterRestController;
 import pwa.project.one_piece.service.CharacterService;
 
 @Controller
-@RequestMapping("/characters")
-public class CharacterViewController {
+@RequestMapping("/admin-characters")
+public class AdminCharacterViewController {
 
     @Autowired
     private CharacterService characterService;
