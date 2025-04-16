@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import pwa.project.one_piece.entity.Character;
 import pwa.project.one_piece.service.CharacterService;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,6 +28,16 @@ public class CharacterRestController {
         characterService.save(character);
         logger.info("Character saved successfully!");
         return ResponseEntity.status(HttpStatus.CREATED).body(character);
+    }
+
+    @PostMapping("/scrape")
+    public List<Character> scrape() {
+        try {
+            return characterService.scrapeAndSaveCharacters();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ArrayList<Character>();
+        }
     }
 
     @PatchMapping("/patch")
