@@ -28,22 +28,29 @@ public class CharacterRestController {
         return ResponseEntity.status(HttpStatus.CREATED).body(character);
     }
 
+    @PatchMapping("/patch")
+    public ResponseEntity<Character> patch(@RequestBody Character character) {
+        characterService.patch(character);
+        logger.info("Character patched successfully!");
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(character);
+    }
+
     @GetMapping("/all")
     public List<Character> findAll() {
         logger.info("Find all characters");
-        return characterService.getAllUsers();
+        return characterService.getAllCharacters();
     }
 
     @GetMapping("/id/{id}")
     public Optional<Character> findByID(@PathVariable Integer id) {
         logger.info("Find the character with id: " + id);
-        return characterService.getUserById(id);
+        return characterService.getCharacterById(id);
     }
 
 
     @GetMapping("/name/{name}")
     public List<Character> findAllWithName(@PathVariable String name) {
-        return characterService.searchCharactersByName(name);
+        return characterService.getCharactersByName(name);
     }
 
     @GetMapping("/withFruits")

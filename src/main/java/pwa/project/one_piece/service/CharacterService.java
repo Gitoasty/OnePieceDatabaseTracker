@@ -20,19 +20,27 @@ public class CharacterService {
         return characterRepository.save(character);
     }
 
-    public Optional<Character> getUserById(Integer id) {
+    public Character patch(Character character) {
+        Character patched = characterRepository.findById(character.getId()).get();
+
+        if (character.getName() != null) patched.setName(character.getName());
+        if (character.getChapterIntroduced() != null) patched.setChapterIntroduced(character.getChapterIntroduced());
+        if (character.getEpisodeIntroduced() != null) patched.setEpisodeIntroduced(character.getEpisodeIntroduced());
+        if (character.getYearIntroduced() != null) patched.setYearIntroduced(character.getYearIntroduced());
+        if (character.getNote() != null) patched.setNote(character.getNote());
+
+        return characterRepository.save(character);
+    }
+
+    public Optional<Character> getCharacterById(Integer id) {
         return characterRepository.findById(id);
     }
 
-    public List<Character> getAllUsers() {
+    public List<Character> getAllCharacters() {
         return characterRepository.findAll();
     }
 
-    public Optional<Character> getUserByName(String name) {
-        return characterRepository.findByName(name);
-    }
-
-    public List<Character> searchCharactersByName(String partialName) {
+    public List<Character> getCharactersByName(String partialName) {
         return characterRepository.findByNameContainingIgnoreCase(partialName);
     }
 
