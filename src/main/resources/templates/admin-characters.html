@@ -49,6 +49,15 @@
     </div>
   </div>
 </header>
+<a th:if="${!fruitFilter}" href="/admin-characters/with-fruits">
+  Fruit users
+</a>
+<a th:if="${!noFruitFilter}" href="/admin-characters/without-fruits">
+  Non Fruit users
+</a>
+<a th:if="${fruitFilter or noFruitFilter}" href="/admin-characters">
+  Show all characters
+</a>
   <h1 style="text-align:center;">One Piece Characters</h1>
 
   <table id="chars">
