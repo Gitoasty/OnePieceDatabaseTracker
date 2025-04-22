@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en-US">
+<html lang="en-US" xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="title" content="Contacts">
@@ -7,8 +7,8 @@
     <meta name="author" content="Matej Miklin">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact page</title>
-    <link rel="icon" type="image/png" href="../images/icon.png">
-    <link rel="stylesheet" media="screen" href="../pretty.css">
+    <link rel="icon" type="image/png" th:href="@{/images/icon.png}">
+    <link rel="stylesheet" media="screen"  th:href="@{/css/pretty.css}">
 </head>
 <body>
     <header class="head">
@@ -19,30 +19,33 @@
             </h1>
             <br>
             <div class="butts1">
-                <a href="../characters.html">
+                <a href="admin-main">
                     Main page
                 </a>
-                <a href="user-contact.html">
+                <a href="admin-contact">
                     <abbr title="ovdje">
                         Contacts
                     </abbr>
                 </a>
-                <a href="about.html">
+                <a href="admin-about">
                     About
                 </a>
-                <a href="news.html">
-                    News
+                <a href="admin-characters">
+                    Characters
                 </a>
-                <a href="store.html">
-                    Store
+                <a href="admin-fruits">
+                    Fruits
                 </a>
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit">Log out</button>
+                </form>
             </div>
         </div>
     </header>
     <br>
     <section id="form_sec">
         <div id="form_bg"></div>
-        <form name="contact-form", id="contact-form">
+        <form name="contact-form" id="contact-form" th:action="@{admin-contact/send-email}" th:object="${contactForm}" method="post">
             <table>
                 <tr>
                     <td>
@@ -55,7 +58,7 @@
                         </div>
                     </td>
                     <td>
-                        <input type="text" id="name" name="name" placeholder="Ime i prezime" required>
+                        <input type="text" id="name" name="name" th:field="*{name}" placeholder="Ime i prezime" required>
                     </td>
                 </tr>
                 <tr>
@@ -69,7 +72,7 @@
                         </div>
                     </td>
                     <td>
-                        <input type="email" id="mail" name="mail" placeholder="mail@domain" required>
+                        <input type="email" id="mail" name="mail" th:field="*{mail}" placeholder="mail@domain" required>
                     </td>
                 </tr>
                 <tr>
@@ -83,20 +86,20 @@
                         </div>
                     </td>
                     <td>
-                        <select id="broj" name="broj">
-                            <option>
+                        <select id="broj" name="broj" th:field="*{broj}" required>
+                            <option th:value="${1}">
                                 1
                             </option>
-                            <option>
+                            <option th:value="${2}">
                                 2
                             </option>
-                            <option selected="selected">
+                            <option th:value="${3}" selected="selected">
                                 3
                             </option>
-                            <option>
+                            <option th:value="${4}">
                                 4
                             </option>
-                            <option>
+                            <option th:value="${5}">
                                 5
                             </option>
                         </select>
@@ -107,18 +110,14 @@
                         <input align="right" type="reset" value="Poništi">
                     </td>
                     <td>
-                        <input type="submit" value="Pošalji " formaction="/file.html">
+                        <input type="submit" value="Pošalji">
                     </td>
                 </tr>
             </table>
         </form>
     </section>
     <br>
-    <a id="mails" href="mailto:matej.miklin@tvz.hr?subject=Upit o One Piece stranici&body=Pitanje vezano za One Piece" target="_top">
-        Slanje maila ovdje :)
-    </a>
-    <br>
-    <section class="sec" style="margin-top: 50px; margin-bottom: 25px; display: flex; flex-direction: row; justify-content: center;">
+    <section class="sec" style="margin-top: 50px; display: flex; flex-direction: row; justify-content: center;">
         <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d122310.7326530882!2d139.12624981314787!3d36.3345377201!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601ee752b92f9f4f%3A0x990168e037ad9de8!2zT05FIFBJRUNFIOm6puOCj-OCieOCueODiOOCoiDkvIrli6LltI4!5e0!3m2!1sen!2shr!4v1717720021565!5m2!1sen!2shr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
     </section>
     <footer>

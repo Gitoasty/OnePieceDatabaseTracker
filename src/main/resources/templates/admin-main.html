@@ -36,9 +36,9 @@
                 <a href="admin-fruits">
                     Fruits
                 </a>
-                <a href="api/character/all">
-                    Store
-                </a>
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit">Log out</button>
+                </form>
             </div>
         </div>
     </header>

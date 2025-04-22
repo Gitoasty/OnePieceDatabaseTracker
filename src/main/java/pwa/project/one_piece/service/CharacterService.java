@@ -79,7 +79,6 @@ public class CharacterService {
 
         List<Character> characters = new ArrayList<>();
 
-        // Find the first table with class "wikitable"
        Element table = doc.selectFirst("table.fandom-table.sortable");
 
         Elements tables = doc.select("table");
