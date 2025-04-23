@@ -1,9 +1,7 @@
-package pwa.project.one_piece.views;
+package pwa.project.one_piece.views.admin;
 
-import com.mailjet.client.ClientOptions;
 import com.mailjet.client.MailjetClient;
 import com.mailjet.client.MailjetRequest;
-import com.mailjet.client.MailjetResponse;
 import com.mailjet.client.errors.MailjetException;
 import com.mailjet.client.resource.Emailv31;
 import org.json.JSONArray;
@@ -59,7 +57,7 @@ public class AdminContactViewController {
                         )
                 );
 
-        MailjetResponse response = client.post(request);
+        client.post(request);
 
         return "admin-contact";
     }

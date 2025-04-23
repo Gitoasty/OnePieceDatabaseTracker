@@ -1,4 +1,4 @@
-package pwa.project.one_piece.views;
+package pwa.project.one_piece.views.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

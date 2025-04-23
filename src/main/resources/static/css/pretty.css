@@ -48,17 +48,26 @@ header h1 {
 
 #banner {
     height: 100%;
+    width: 10%;
     background-image: url("../images/stamp.png");
     background-size: contain;
     background-repeat: no-repeat;
+    position: absolute;
+    left: 0;
+}
+.head {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* centers the `.butts` block */
+    padding: 10px;
+    position: relative;
 }
 
-#butts {
-    margin-left: 27.5%;
-}
-
-.butts1 {
-    margin-left: -23.5%;
+.butts {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
 }
 
 .butts1 a,

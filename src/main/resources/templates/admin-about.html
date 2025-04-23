@@ -15,28 +15,31 @@
         <header class="head" id="stick">
             <div id="banner"></div>
             <div class="butts" id="butts">
-                <h1>
+                <h1 class="title">
                     One Piece Wiki
                 </h1>
                 <br>
                 <div class="butts1">
-                    <a href="user-main.html">
+                    <a href="admin-main">
                         Main page
                     </a>
-                    <a href="user-contact.html">
+                    <a href="admin-contact">
+                        Contacts
+                    </a>
+                    <a href="admin-about">
                         <abbr title="ovdje">
-                            Contacts
+                            About
                         </abbr>
                     </a>
-                    <a href="about.html">
-                        About
+                    <a href="admin-characters">
+                        Characters
                     </a>
-                    <a href="news.html">
-                        News
+                    <a href="admin-fruits">
+                        Fruits
                     </a>
-                    <a href="store.html">
-                        Store
-                    </a>
+                    <form th:action="@{/logout}" method="post">
+                        <button type="submit">Log out</button>
+                    </form>
                 </div>
             </div>
         </header>
