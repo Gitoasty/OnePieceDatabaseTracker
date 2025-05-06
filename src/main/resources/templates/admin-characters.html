@@ -34,18 +34,23 @@
       <a href="admin-main">
         Main page
       </a>
-      <a href="contact">
+      <a href="admin-contact">
         Contacts
       </a>
-      <a href="admin-contact">
+      <a href="admin-about">
         About
       </a>
-      <a href="news.html">
-        News
+      <a href="admin-characters">
+        <abbr title="Ovdje">
+          Characters
+        </abbr>
       </a>
-      <a href="api/character/all">
-        Store
+      <a href="admin-fruits">
+        Fruits
       </a>
+      <form th:action="@{/logout}" method="post">
+        <button type="submit">Log out</button>
+      </form>
     </div>
   </div>
 </header>
@@ -59,6 +64,15 @@
   Show all characters
 </a>
   <h1 style="text-align:center;">One Piece Characters</h1>
+
+<form action="#" th:action="@{admin-characters/submit}" method="post">
+  <input type="text" name="name" />
+  <input type="text" name="chapterIntroduced" />
+  <input type="text" name="episodeIntroduced" />
+  <input type="text" name="yearIntroduced" />
+  <input type="text" name="note" />
+  <button type="submit">Submit</button>
+</form>
 
   <table id="chars">
     <thead>

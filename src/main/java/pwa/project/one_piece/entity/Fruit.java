@@ -14,8 +14,17 @@ public class Fruit {
     @Column(name="name", nullable = false)
     private String name;
 
-    @Column(name="description", nullable = false)
-    private String description;
+    @Column(name="power", nullable = false)
+    private String power;
+
+    @Column(name="awakened", nullable = true)
+    private String awakened;
+
+    @Column(name="weakness", nullable = true)
+    private String weakness;
+
+    @Column(name="type", nullable = false)
+    private FruitType type;
 
     @ManyToOne
     @JoinColumn(name="characterID")

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>One Piece Characters</title>
+    <style>
+        table {
+          width: 80%;
+          margin: 20px auto;
+          border-collapse: collapse;
+        }
+        th, td {
+          padding: 12px;
+          border: 1px solid #ccc;
+          text-align: left;
+        }
+        th {
+          background-color: #f4a261;
+        }
+        tr:nth-child(even) {
+          background-color: #fdf5e6;
+        }
+    </style>
+</head>
+<body class="main">
+<header class="head">
+    <div id="banner"></div>
+    <div class="butts" id="butts">
+        <h1 class="title">
+            One Piece Wiki
+        </h1>
+        <br>
+        <div class="butts1">
+            <a href="admin-main">
+                Main page
+            </a>
+            <a href="admin-contact">
+                Contacts
+            </a>
+            <a href="admin-about">
+                About
+            </a>
+            <a href="admin-characters">
+                Characters
+            </a>
+            <a href="admin-fruits">
+                <abbr title="Ovdje">
+                    Fruits
+                </abbr>
+            </a>
+            <form th:action="@{/logout}" method="post">
+                <button type="submit">Log out</button>
+            </form>
+        </div>
+    </div>
+</header>
+<a th:if="${!userFilter}" href="/admin-fruits/with-user">
+    Fruits with users
+</a>
+<a th:if="${!noUserFilter}" href="/admin-fruits/without-users">
+    Fruits without users
+</a>
+<a th:if="${userFilter or noUserFilter}" href="/admin-fruits">
+    Show all fruits
+</a>
+<h1 style="text-align:center;">Devil Fruits</h1>
+
+<table id="fruits">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Power</th>
+        <th>Awakened</th>
+        <th>Weakness</th>
+        <th>Type</th>
+        <th>User</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="fruit : ${fruitList}">
+        <td th:text="${fruit.getName()}">Gum Gum</td>
+        <td th:text="${fruit.getPower()}">Rubber body</td>
+        <td th:text="${fruit.getAwakened()}">Turns the ground to rubber</td>
+        <td th:text="${fruit.getWeakness()}">Blades</td>
+        <td th:text="${fruit.getType()}">Paramecia</td>
+        <td th:text="${fruit.getCharacter()}">Luffy</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
