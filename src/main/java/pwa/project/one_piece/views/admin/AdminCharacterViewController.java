@@ -41,7 +41,7 @@ public class AdminCharacterViewController {
         return "admin-characters";
     }
 
-    @PostMapping("/submit")
+    @PostMapping("/save")
     public String createCharacter(
             @RequestParam String name,
             @RequestParam(required = false) String chapterIntroduced,

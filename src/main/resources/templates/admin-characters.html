@@ -2,25 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
+  <meta name="title" content="Contacts">
+  <meta name="keywords" content="One Piece, Characters, Character">
+  <meta name="author" content="Matej Miklin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>One Piece Characters</title>
-  <style>
-    table {
-      width: 80%;
-      margin: 20px auto;
-      border-collapse: collapse;
-    }
-    th, td {
-      padding: 12px;
-      border: 1px solid #ccc;
-      text-align: left;
-    }
-    th {
-      background-color: #f4a261;
-    }
-    tr:nth-child(even) {
-      background-color: #fdf5e6;
-    }
-  </style>
+  <link rel="icon" type="image/png" th:href="@{/images/icon.png}">
+  <link rel="stylesheet" media="screen"  th:href="@{/css/pretty.css}">
 </head>
 <body class="main">
 <header class="head">
@@ -54,27 +42,117 @@
     </div>
   </div>
 </header>
-<a th:if="${!fruitFilter}" href="/admin-characters/with-fruits">
-  Fruit users
-</a>
-<a th:if="${!noFruitFilter}" href="/admin-characters/without-fruits">
-  Non Fruit users
-</a>
-<a th:if="${fruitFilter or noFruitFilter}" href="/admin-characters">
-  Show all characters
-</a>
+<nav id="odanav">
+  <ul>
+    <li>
+      <div>
+        <a th:if="${!fruitFilter}" href="/admin-characters/with-fruits">
+          Fruit users
+        </a>
+      </div>
+    </li>
+    <li>
+      <div>
+        <a th:if="${!noFruitFilter}" href="/admin-characters/without-fruits">
+          Non Fruit users
+        </a>
+      </div>
+    </li>
+    <li>
+      <div>
+        <a th:if="${fruitFilter or noFruitFilter}" href="/admin-characters">
+          Show all characters
+        </a>
+      </div>
+    </li>
+  </ul>
+</nav>
   <h1 style="text-align:center;">One Piece Characters</h1>
 
-<form action="#" th:action="@{admin-characters/submit}" method="post">
-  <input type="text" name="name" />
-  <input type="text" name="chapterIntroduced" />
-  <input type="text" name="episodeIntroduced" />
-  <input type="text" name="yearIntroduced" />
-  <input type="text" name="note" />
-  <button type="submit">Submit</button>
-</form>
+<section id="form_sec">
+  <div id="form_bg"></div>
+  <form action="#" th:action="@{admin-characters/save}" method="post">
+    <table>
+      <tr>
+        <td>
+          <div>
+            <strong>
+              <label>
+                Name:
+              </label>
+            </strong>
+          </div>
+        </td>
+        <td>
+          <input type="text" name="name" />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div>
+            <strong>
+              <label>
+                Chapter introduced:
+              </label>
+            </strong>
+          </div>
+        </td>
+        <td>
+          <input type="text" name="chapterIntroduced" />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div>
+            <strong>
+              <label>
+                Episode introduced:
+              </label>
+            </strong>
+          </div>
+        </td>
+        <td>
+          <input type="text" name="episodeIntroduced" />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div>
+            <strong>
+              <label>
+                Year introduced:
+              </label>
+            </strong>
+          </div>
+        </td>
+        <td>
+          <input type="text" name="yearIntroduced" />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div>
+            <strong>
+              <label>
+                Note:
+              </label>
+            </strong>
+          </div>
+        </td>
+        <td>
+          <input type="text" name="note" />
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <button type="submit">Submit</button>
+        </td>
+      </tr>
+    </table>
+  </form>
+</section>
 
-  <table id="chars">
+  <table id="chars" class="chars">
     <thead>
     <tr>
       <th>Name</th>

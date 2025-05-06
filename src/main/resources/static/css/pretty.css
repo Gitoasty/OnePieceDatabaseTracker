@@ -803,3 +803,23 @@ footer {
         width: 85%;
     }
 }
+
+.chars {
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: collapse;
+}
+
+.chars th, td {
+    padding: 12px;
+    border: 1px solid #ccc;
+    text-align: center;
+}
+
+.chars th {
+    background-color: #f4a261;
+}
+
+.chars tr:nth-child(even) {
+    background-color: #fdf5e6;
+}
