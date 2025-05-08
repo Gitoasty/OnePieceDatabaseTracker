@@ -34,7 +34,7 @@ public class CharacterService {
     }
 
     public Character patch(Character character) {
-        Character patched = characterRepository.findById(character.getId()).get();
+        Character patched = characterRepository.findByName(character.getName()).get();
 
         if (character.getName() != null) patched.setName(character.getName());
         if (character.getChapterIntroduced() != null) patched.setChapterIntroduced(character.getChapterIntroduced());
@@ -57,8 +57,8 @@ public class CharacterService {
         return characterRepository.findByNameContainingIgnoreCase(partialName);
     }
 
-    public void delete(Integer id) {
-        characterRepository.deleteById(id);
+    public void delete(String name) {
+        characterRepository.deleteByName(name);
     }
 
     public List<Character> findWithFruit() {

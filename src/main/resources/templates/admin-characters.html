@@ -10,7 +10,7 @@
   <link rel="icon" type="image/png" th:href="@{/images/icon.png}">
   <link rel="stylesheet" media="screen"  th:href="@{/css/pretty.css}">
 </head>
-<body class="main">
+<body >
 <header class="head">
   <div id="banner"></div>
   <div class="butts" id="butts">
@@ -69,9 +69,9 @@
 </nav>
   <h1 style="text-align:center;">One Piece Characters</h1>
 
-<section id="form_sec">
-  <div id="form_bg"></div>
-  <form action="#" th:action="@{admin-characters/save}" method="post">
+<section class="form_sec">
+  <div class="form_bg"></div>
+  <form action="#" class="contact-form" th:action="@{admin-characters/save}" method="post">
     <table>
       <tr>
         <td>
@@ -144,8 +144,32 @@
         </td>
       </tr>
       <tr>
+        <td>
+          <div>
+            <strong>
+              <label>
+                Action to perform:
+              </label>
+            </strong>
+          </div>
+        </td>
+        <td>
+          <select id="action" name="action" th:field="*{action}" required>
+            <option th:value="${Add}">
+              Add
+            </option>
+            <option th:value="${Patch}">
+              Update
+            </option>
+            <option th:value="${Delete}" selected="selected">
+              Delete
+            </option>
+          </select>
+        </td>
+      </tr>
+      <tr>
         <td colspan="2">
-          <button type="submit">Submit</button>
+          <input type="submit" value="Add"/>
         </td>
       </tr>
     </table>
@@ -172,5 +196,11 @@
     </tr>
     </tbody>
   </table>
+
+<footer>
+  <h3>
+    Matej Miklin, 0246122414
+  </h3>
+</footer>
 </body>
 </html>

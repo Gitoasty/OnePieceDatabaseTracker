@@ -47,18 +47,44 @@ public class AdminCharacterViewController {
             @RequestParam(required = false) String chapterIntroduced,
             @RequestParam(required = false) String episodeIntroduced,
             @RequestParam String yearIntroduced,
-            @RequestParam(required = false) String note
+            @RequestParam(required = false) String note,
+            @RequestParam String action
     ) {
-        Character character = new Character();
-        character.setName(name);
-        character.setChapterIntroduced(chapterIntroduced);
-        character.setEpisodeIntroduced(episodeIntroduced);
-        character.setYearIntroduced(yearIntroduced);
-        character.setNote(note);
 
-        character.setMaster(name.contains("Marshall D."));
+        switch (action) {
+            case "Add":
+                if (!name.isEmpty() && !yearIntroduced.isEmpty() && yearIntroduced.matches("^[1-9]\\d*$")) {
+                    Character character = new Character();
+                    character.setName(name);
+                    character.setChapterIntroduced(chapterIntroduced);
+                    character.setEpisodeIntroduced(episodeIntroduced);
+                    character.setYearIntroduced(yearIntroduced);
+                    character.setNote(note);
 
-        characterService.save(character);
+                    character.setMaster(name.contains("Marshall D."));
+
+                    characterService.save(character);
+                }
+                break;
+            case "Patch":
+                Character character = new Character();
+                if (!name.isEmpty() && yearIntroduced.matches("^[1-9]\\d*$")) character.setName(name);
+                if (!chapterIntroduced.isEmpty()) character.setChapterIntroduced(chapterIntroduced);
+                if (!episodeIntroduced.isEmpty()) character.setEpisodeIntroduced(episodeIntroduced);
+                if (!yearIntroduced.isEmpty()) character.setYearIntroduced(yearIntroduced);
+                if (!note.isEmpty()) character.setNote(note);
+
+                character.setMaster(name.contains("Marshall D."));
+                characterService.patch(character);
+                break;
+            case "Delete":
+                characterService.delete(name);
+                break;
+            default:
+                break;
+        }
+
+
         return "redirect:/admin-characters";
     }
 }

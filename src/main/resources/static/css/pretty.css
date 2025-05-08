@@ -333,7 +333,7 @@ blockquote {
     background-image: url("../images/mihawk.jpg");
 }
 
-#form_sec {
+.form_sec {
     width: 60%;
     height: 60vh;
     margin: 0 auto;
@@ -344,7 +344,7 @@ blockquote {
     justify-content: center;
 }
 
-#form_bg {
+.form_bg {
     width: 100%;
     height: 100%;
     background-image: url("../images/form_bg.jpg");
@@ -361,7 +361,7 @@ contact-form {
     width: 100%;
 }
 
-#contact-form table {
+.contact-form table {
     height: 100%;
     width: 100%;
     position: relative;
@@ -369,7 +369,7 @@ contact-form {
     z-index: 1;
 }
 
-#contact-form div, input, select {
+.contact-form div, input, select {
     border: none;
     border-radius: 20px;
     background-color: rgba(251, 192, 147, 0.65);

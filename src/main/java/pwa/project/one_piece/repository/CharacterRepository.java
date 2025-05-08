@@ -20,4 +20,7 @@ public interface CharacterRepository extends JpaRepository<Character, Integer> {
 
     @Query("SELECT c FROM Character c WHERE size(c.fruits) = 0")
     List<Character> findCharactersWithoutFruits();
+
+    @Query("DELETE c FROM Character c WHERE c.name = name")
+    void deleteByName(String name);
 }
