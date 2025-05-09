@@ -10,7 +10,44 @@
   <link rel="icon" type="image/png" th:href="@{/images/icon.png}">
   <link rel="stylesheet" media="screen"  th:href="@{/css/pretty.css}">
 </head>
-<body >
+<body>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const optionSelect = document.getElementById("option");
+    const name = document.getElementById("name");
+    const chapterIntroduced = document.getElementById("chapterIntroduced");
+    const episodeIntroduced = document.getElementById("episodeIntroduced");
+    const yearIntroduced = document.getElementById("yearIntroduced");
+    const note = document.getElementById("note");
+
+    function updateRequiredFields() {
+      const action = optionSelect.value;
+
+      name.required = false;
+      chapterIntroduced.required = false;
+      episodeIntroduced.required = false;
+      yearIntroduced.required = false;
+      note.required = false;
+
+
+      if (action === "Add") {
+        name.required = true;
+        chapterIntroduced.required = true;
+        episodeIntroduced.required = true;
+        yearIntroduced.required = true;
+        note.required = true;
+      } else if (action === "Patch") {
+        name.required = true;
+      } else if (action === "Delete") {
+        name.required = true;
+      }
+    }
+
+    optionSelect.addEventListener("change", updateRequiredFields);
+
+    updateRequiredFields();
+  });
+</script>
 <header class="head">
   <div id="banner"></div>
   <div class="butts" id="butts">
@@ -71,7 +108,7 @@
 
 <section class="form_sec">
   <div class="form_bg"></div>
-  <form action="#" class="contact-form" th:action="@{admin-characters/save}" method="post">
+  <form class="contact-form" th:action="@{admin-characters/save}" method="post">
     <table>
       <tr>
         <td>
@@ -84,7 +121,7 @@
           </div>
         </td>
         <td>
-          <input type="text" name="name" />
+          <input type="text" name="name" id="name"/>
         </td>
       </tr>
       <tr>
@@ -98,7 +135,7 @@
           </div>
         </td>
         <td>
-          <input type="text" name="chapterIntroduced" />
+          <input type="text" name="chapterIntroduced" id="chapterIntroduced"/>
         </td>
       </tr>
       <tr>
@@ -112,7 +149,7 @@
           </div>
         </td>
         <td>
-          <input type="text" name="episodeIntroduced" />
+          <input type="text" name="episodeIntroduced" id="episodeIntroduced"/>
         </td>
       </tr>
       <tr>
@@ -126,7 +163,7 @@
           </div>
         </td>
         <td>
-          <input type="text" name="yearIntroduced" />
+          <input type="text" name="yearIntroduced" id="yearIntroduced"/>
         </td>
       </tr>
       <tr>
@@ -140,7 +177,7 @@
           </div>
         </td>
         <td>
-          <input type="text" name="note" />
+          <input type="text" name="note" id="note"/>
         </td>
       </tr>
       <tr>
@@ -154,14 +191,14 @@
           </div>
         </td>
         <td>
-          <select id="action" name="action" th:field="*{action}" required>
-            <option th:value="${Add}">
+          <select id="option" name="option" required>
+            <option value="Add" selected>
               Add
             </option>
-            <option th:value="${Patch}">
+            <option value="Patch">
               Update
             </option>
-            <option th:value="${Delete}" selected="selected">
+            <option value="Delete">
               Delete
             </option>
           </select>

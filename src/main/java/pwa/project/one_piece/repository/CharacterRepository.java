@@ -2,6 +2,7 @@ package pwa.project.one_piece.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import pwa.project.one_piece.entity.Character;
 
@@ -21,6 +22,7 @@ public interface CharacterRepository extends JpaRepository<Character, Integer> {
     @Query("SELECT c FROM Character c WHERE size(c.fruits) = 0")
     List<Character> findCharactersWithoutFruits();
 
-    @Query("DELETE c FROM Character c WHERE c.name = name")
     void deleteByName(String name);
+
+    Character getByName(String name);
 }

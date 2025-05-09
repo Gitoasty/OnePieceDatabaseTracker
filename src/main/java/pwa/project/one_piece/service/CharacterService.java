@@ -1,5 +1,6 @@
 package pwa.project.one_piece.service;
 
+import jakarta.transaction.Transactional;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -10,13 +11,7 @@ import pwa.project.one_piece.entity.Character;
 import pwa.project.one_piece.repository.CharacterRepository;
 import pwa.project.one_piece.security.SslUtil;
 
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 import java.io.IOException;
-import java.security.SecureRandom;
-import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -57,6 +52,11 @@ public class CharacterService {
         return characterRepository.findByNameContainingIgnoreCase(partialName);
     }
 
+    public Character getCharacterByName(String name) {
+        return characterRepository.getByName(name);
+    }
+
+    @Transactional
     public void delete(String name) {
         characterRepository.deleteByName(name);
     }

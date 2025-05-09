@@ -48,10 +48,10 @@ public class AdminCharacterViewController {
             @RequestParam(required = false) String episodeIntroduced,
             @RequestParam String yearIntroduced,
             @RequestParam(required = false) String note,
-            @RequestParam String action
+            @RequestParam String option
     ) {
 
-        switch (action) {
+        switch (option) {
             case "Add":
                 if (!name.isEmpty() && !yearIntroduced.isEmpty() && yearIntroduced.matches("^[1-9]\\d*$")) {
                     Character character = new Character();
@@ -62,20 +62,34 @@ public class AdminCharacterViewController {
                     character.setNote(note);
 
                     character.setMaster(name.contains("Marshall D."));
-
                     characterService.save(character);
                 }
                 break;
             case "Patch":
-                Character character = new Character();
-                if (!name.isEmpty() && yearIntroduced.matches("^[1-9]\\d*$")) character.setName(name);
-                if (!chapterIntroduced.isEmpty()) character.setChapterIntroduced(chapterIntroduced);
-                if (!episodeIntroduced.isEmpty()) character.setEpisodeIntroduced(episodeIntroduced);
-                if (!yearIntroduced.isEmpty()) character.setYearIntroduced(yearIntroduced);
-                if (!note.isEmpty()) character.setNote(note);
+                Character character = characterService.getCharacterByName(name);
+                if (character == null) {
+                    return "redirect:/admin-characters";
+                }
 
-                character.setMaster(name.contains("Marshall D."));
-                characterService.patch(character);
+                if (name != null && !name.isEmpty()) {
+                    character.setName(name);
+                } else {
+                    return "redirect:/admin-characters";
+                }
+                if (chapterIntroduced != null && !chapterIntroduced.isEmpty()) {
+                    character.setChapterIntroduced(chapterIntroduced);
+                }
+                if (episodeIntroduced != null && !episodeIntroduced.isEmpty()) {
+                    character.setEpisodeIntroduced(episodeIntroduced);
+                }
+                if (yearIntroduced != null && !yearIntroduced.isEmpty() && yearIntroduced.matches("^[1-9]\\d*$")) {
+                    character.setYearIntroduced(yearIntroduced);
+                }
+                if (note != null && !note.isEmpty()) {
+                    character.setNote(note);
+                }
+
+                characterService.save(character);
                 break;
             case "Delete":
                 characterService.delete(name);
@@ -83,7 +97,6 @@ public class AdminCharacterViewController {
             default:
                 break;
         }
-
 
         return "redirect:/admin-characters";
     }

@@ -807,6 +807,7 @@ footer {
 .chars {
     width: 80%;
     margin: 20px auto;
+    border-radius: 20px;
     border-collapse: collapse;
 }
 
@@ -814,6 +815,22 @@ footer {
     padding: 12px;
     border: 1px solid #ccc;
     text-align: center;
+}
+
+.chars thead tr th:first-child {
+    border-top-left-radius: 20px;
+}
+
+.chars thead tr th:last-child {
+    border-top-right-radius: 20px;
+}
+
+.chars tr:last-child td:first-child {
+    border-bottom-left-radius: 20px;
+}
+
+.chars tr:last-child td:last-child {
+    border-bottom-right-radius: 20px;
 }
 
 .chars th {
