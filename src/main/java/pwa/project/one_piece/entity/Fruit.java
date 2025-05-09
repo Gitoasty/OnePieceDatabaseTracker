@@ -27,7 +27,7 @@ public class Fruit {
     private FruitType type;
 
     @ManyToOne
-    @JoinColumn(name="characterID", nullable = true)
+    @JoinColumn(name="character", nullable = true)
     private Character character;
 
     @Override

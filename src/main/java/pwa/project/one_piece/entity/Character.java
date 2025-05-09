@@ -41,7 +41,8 @@ public class Character implements Comparable<Character> {
     @Column(name="master", nullable = false)
     private boolean master;
 
-    @OneToMany(mappedBy="character", cascade=CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy="character")
+    @Column(name="fruits", nullable = true)
     private List<Fruit> fruits = new ArrayList<>();
 
     public boolean masterGetter() {

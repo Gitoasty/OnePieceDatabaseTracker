@@ -839,3 +839,7 @@ footer {
 .chars tr:nth-child(even) {
     background-color: #fdf5e6;
 }
+
+.contact-form .butt:hover {
+    background-color: #f4a261;
+}

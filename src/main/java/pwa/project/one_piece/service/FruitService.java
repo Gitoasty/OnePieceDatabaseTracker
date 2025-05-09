@@ -95,8 +95,8 @@ public class FruitService {
 
     @Transactional
     public void addFruit(String fruitName, String fruitPower,
-                          String awakened, String weakness,
-                          FruitType fruitType, String characterName) {
+                         String awakened, String weakness,
+                         FruitType fruitType, String characterName) {
 
         if (fruitRepository.findByNameIgnoreCase(fruitName).isEmpty()) {
             Fruit fruit = new Fruit();

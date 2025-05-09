@@ -4,24 +4,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import pwa.project.one_piece.entity.AppUser;
 import pwa.project.one_piece.service.AppUserService;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -30,75 +29,71 @@ import static org.springframework.security.config.Customizer.withDefaults;
 public class SecurityConfig {
 
     @Autowired
-    AppUserService appUserService;
-    @Autowired
-    CustomLoginSuccessHandler customLoginSuccessHandler;
+    private AppUserService appUserService;
 
     @Bean
-    public SecurityFilterChain filterChainForm(HttpSecurity http) throws Exception {
-        http
-                .securityMatcher("/**") // This will apply to all non-API routes
-                .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/register/**", "/login", "/about/**",
-                            "/contact/**", "/main/**").permitAll(); // Allow access to common pages
-                    auth.anyRequest().authenticated(); // All other routes require login
-                })
-                .formLogin(form -> form
-                        .loginPage("/login")
-                        .successHandler(customLoginSuccessHandler)
-                        .permitAll()
-                )
-                .logout(logout -> logout
-                        .logoutUrl("/logout")
-                        .logoutSuccessUrl("/login?logout")
-                        .permitAll()
-                );
-        return http.build();
-    }
-
-    @Bean
-    @ConditionalOnProperty(value="module.enabled", havingValue = "basic", matchIfMissing = true)
-    public SecurityFilterChain filterChainBasic(HttpSecurity http) throws Exception {
+    @Order(1)
+    @ConditionalOnProperty(value = "module.enabled", havingValue = "basic", matchIfMissing = true)
+    public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
         return http
                 .securityMatcher("/api/**")
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers(HttpMethod.GET, "/api/**").hasAnyRole("USER", "ADMIN");  // GET for USER & ADMIN
-                    auth.requestMatchers(HttpMethod.POST, "/api/**").hasRole("ADMIN"); // POST only for ADMIN
-                    auth.requestMatchers(HttpMethod.PATCH, "/api/**").hasRole("ADMIN");  // PUT only for ADMIN
-                    auth.requestMatchers(HttpMethod.DELETE, "/api/**").hasRole("ADMIN"); // DELETE only for ADMIN
-                    auth.anyRequest().authenticated(); // Ensure all other requests are authenticated
-
-
+                    auth.requestMatchers(HttpMethod.GET, "/api/**").hasAnyRole("USER", "ADMIN");
+                    auth.requestMatchers(HttpMethod.POST, "/api/**").hasRole("ADMIN");
+                    auth.requestMatchers(HttpMethod.PATCH, "/api/**").hasRole("ADMIN");
+                    auth.requestMatchers(HttpMethod.DELETE, "/api/**").hasRole("ADMIN");
                 })
-                .csrf(csrf-> csrf.ignoringRequestMatchers(AntPathRequestMatcher.antMatcher("/api/**")))
+                .csrf(csrf -> csrf.ignoringRequestMatchers(AntPathRequestMatcher.antMatcher("/api/**")))
                 .cors(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .httpBasic(withDefaults())
                 .build();
     }
 
+    @Bean
+    @Order(2)
+    public SecurityFilterChain formLoginChain(HttpSecurity http) throws Exception {
+        http.authorizeHttpRequests(auth -> auth
+                .requestMatchers("/css/**", "/js/**", "/images/**", "/webjars/**").permitAll()
+                .requestMatchers("/login", "/register").permitAll()
+                .anyRequest().authenticated()
+        );
+
+        http.formLogin(form -> form
+                .loginPage("/login")
+                .successHandler(customLoginSuccessHandler())
+                .permitAll()
+        );
+
+        http.logout(logout -> logout.permitAll());
+
+        // Add our custom filter before the standard authentication filter
+        http.addFilterBefore(createUserIfNotExistsFilter(), UsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
+    }
 
     @Bean
-    public UserDetailsService userDetailsService() {
-        List<AppUser> existingUsers = appUserService.getAllUsers();
-        List<UserDetails> users = new ArrayList<>();
-        for (AppUser u : existingUsers) {
-            users.add(User.withUsername(u.getUsername())
-                    .password(u.getPassword())
-                    .roles("USER")
-                    .build());
-        }
-        users.add(User.withUsername("user")
-                .password(passwordEncoder().encode("1234"))
-                .roles("USER")
-                .build());
-        users.add(
-                User.withUsername("admin")
-                        .password(passwordEncoder().encode("adminpass"))
-                        .roles("ADMIN")
-                        .build()
-        );
-        return new InMemoryUserDetailsManager(users);
+    public AuthenticationSuccessHandler customLoginSuccessHandler() {
+        return new CustomLoginSuccessHandler();
+    }
+
+    @Bean
+    public CreateUserIfNotExistsFilter createUserIfNotExistsFilter() {
+        return new CreateUserIfNotExistsFilter(appUserService, passwordEncoder());
+    }
+
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(new CustomUserDetailsService(appUserService, passwordEncoder()));
+        authProvider.setPasswordEncoder(passwordEncoder());
+        return authProvider;
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
+        return authConfig.getAuthenticationManager();
     }
 
     @Bean

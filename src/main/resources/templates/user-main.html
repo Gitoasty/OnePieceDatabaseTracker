@@ -19,23 +19,26 @@
             </h1>
             <br>
             <div class="butts1">
-                <a href="characters">
+                <a href="user-main">
                     <abbr title="ovdje">
                         Main page
                     </abbr>
                 </a>
-                <a href="contact">
+                <a href="user-contact">
                     Contacts
                 </a>
-                <a href="api/character/all">
+                <a href="user-about">
                     About
                 </a>
-                <a href="news.html">
-                    News
+                <a href="user-characters">
+                    Characters
                 </a>
-                <a href="store.html">
-                    Store
+                <a href="user-fruits">
+                    Fruits
                 </a>
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit">Log out</button>
+                </form>
             </div>
         </div>
     </header>

@@ -2,9 +2,6 @@ package pwa.project.one_piece.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Entity
 @Data
@@ -21,10 +18,4 @@ public class AppUser {
 
     @Column(name = "password", nullable = false)
     private String password;
-
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 }

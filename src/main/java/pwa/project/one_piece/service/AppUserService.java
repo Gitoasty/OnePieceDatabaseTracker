@@ -1,31 +1,34 @@
 package pwa.project.one_piece.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import pwa.project.one_piece.entity.AppUser;
-import pwa.project.one_piece.repository.UserRepository;
+import pwa.project.one_piece.repository.AppUserRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AppUserService {
 
     @Autowired
-    private UserRepository userRepository;
-
-    public AppUser save(AppUser user) {
-        return userRepository.save(user);
-    }
+    private AppUserRepository appUserRepository;
 
     public List<AppUser> getAllUsers() {
-        return userRepository.findAll();
+        return appUserRepository.findAll();
     }
 
-    public List<AppUser> getUsersByName(String name) {
-        return userRepository.findAllByUsername(name);
+    public AppUser findByUsername(String username) {
+        return appUserRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
     }
 
-    public void delete(Integer id) {
-        userRepository.deleteById(id);
+    public boolean existsByUsername(String username) {
+        return appUserRepository.findByUsername(username).isPresent();
+    }
+
+    public AppUser saveUser(AppUser user) {
+        return appUserRepository.save(user);
     }
 }

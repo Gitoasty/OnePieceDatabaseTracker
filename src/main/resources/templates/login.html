@@ -1,23 +1,77 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
+    <meta name="title" content="Contacts">
+    <meta name="keywords" content="One Piece, Fandom, One Piece Wiki">
+    <meta name="author" content="Matej Miklin">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
-</head>
-<body>
+    <link rel="icon" type="image/png" th:href="@{/images/icon.png}">
+    <link rel="stylesheet" media="screen"  th:href="@{/css/pretty.css}">
+    </head>
+<body style="overflow: hidden;">
+<header class="head">
+    <div id="banner"></div>
+    <div class="butts" id="butts">
+        <h1 class="title">
+            One Piece Wiki
+        </h1>
+    </div>
+</header>
 <div class="login-container" align="center">
     <h2>Login</h2>
-    <form th:action="@{/login}" method="post">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required>
+    <section class="form_sec">
+        <div class="form_bg"></div>
+        <form th:action="@{/login}" method="post">
+            <table>
+                <tr>
+                    <td>
+                        <div>
+                            <strong>
+                                <label for="username">Username:</label>
+                            </strong>
+                        </div>
+                    </td>
+                    <td>
+                        <input type="text" id="username" name="username" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div>
+                            <strong>
+                                <label for="password">Password:</label>
+                            </strong>
+                        </div>
 
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
-
-        <button type="submit">Login</button>
-    </form>
-    <p th:if="${param.error}" style="color: red;">Invalid username or password</p>
+                    </td>
+                    <td>
+                        <input type="password" id="password" name="password" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <button type="submit">Login</button>
+                    </td>
+                </tr>
+            </table>
+        </form>
+        <p th:if="${param.error}" style="color: red;">Invalid username or password</p>
+    </section>
 </div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<footer>
+    <h3>
+        Matej Miklin, 0246122414
+    </h3>
+</footer>
 </body>
 </html>

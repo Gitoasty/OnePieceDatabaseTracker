@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="title" content="Contacts">
+    <meta name="keywords" content="One Piece, Fruit, Devil fruit">
+    <meta name="author" content="Matej Miklin">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>One Piece Fruits</title>
+    <link rel="icon" type="image/png" th:href="@{/images/icon.png}">
+    <link rel="stylesheet" media="screen"  th:href="@{/css/pretty.css}">
+</head>
+<body>
+<header class="head">
+    <div id="banner"></div>
+    <div class="butts" id="butts">
+        <h1 class="title">
+            One Piece Wiki
+        </h1>
+        <br>
+        <div class="butts1">
+            <a href="user-main">
+                Main page
+            </a>
+            <a href="user-contact">
+                Contacts
+            </a>
+            <a href="user-about">
+                About
+            </a>
+            <a href="user-characters">
+                Characters
+            </a>
+            <a href="user-fruits">
+                <abbr title="Ovdje">
+                    Fruits
+                </abbr>
+            </a>
+            <form th:action="@{/logout}" method="post">
+                <button type="submit">Log out</button>
+            </form>
+        </div>
+    </div>
+</header>
+<nav id="odanav">
+    <ul>
+        <li>
+            <div>
+                <a th:if="${!userFilter}" href="/user-fruits/with-user">
+                    Fruits with users
+                </a>
+            </div>
+        </li>
+        <li>
+            <div>
+                <a th:if="${!noUserFilter}" href="/user-fruits/without-users">
+                    Fruits without users
+                </a>
+            </div>
+        </li>
+        <li>
+            <div>
+                <a th:if="${userFilter == true or noUserFilter == true}" href="/user-fruits">
+                    Show all fruits
+                </a>
+            </div>
+        </li>
+    </ul>
+</nav>
+<h1 style="text-align:center;">Devil Fruits</h1>
+
+<section class="form_sec">
+    <div class="form_bg"></div>
+    <form class="contact-form" th:action="@{/user-fruits/save}" method="post">
+        <input type="hidden" name="searchName" th:value="${searchName}" />
+        <table>
+            <tr>
+                <td>
+                    <div>
+                        <strong>
+                            <label>
+                                Name:
+                            </label>
+                        </strong>
+                    </div>
+                </td>
+                <td>
+                    <input type="text" name="name" id="name" required/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="button" class="butt" value="Back to All Fruits" th:onclick="'window.location.href=\'' + @{/user-fruits} + '\''" />
+                </td>
+                <td>
+                    <input type="submit" class="butt" value="Search"/>
+                </td>
+            </tr>
+        </table>
+    </form>
+</section>
+<br>
+
+<table id="chars" class="chars">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Power</th>
+        <th>Awakened</th>
+        <th>Weakness</th>
+        <th>Type</th>
+        <th>User</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="fruit : ${fruitList}">
+        <td th:text="${fruit.getName()}">Gum Gum</td>
+        <td th:text="${fruit.getPower()}">Rubber body</td>
+        <td th:text="${fruit.getAwakened()}">Turns the ground to rubber</td>
+        <td th:text="${fruit.getWeakness()}">Blades</td>
+        <td th:text="${fruit.getType()}">Paramecia</td>
+        <td th:text="${fruit.character != null ? fruit.getCharacter().getName() : '—'}">Luffy</td>
+    </tr>
+    </tbody>
+</table>
+
+<footer>
+    <h3>
+        Matej Miklin, 0246122414
+    </h3>
+</footer>
+</body>
+</html>
