@@ -27,6 +27,17 @@ public class Fruit {
     private FruitType type;
 
     @ManyToOne
-    @JoinColumn(name="characterID")
+    @JoinColumn(name="characterID", nullable = true)
     private Character character;
+
+    @Override
+    public String toString() {
+        return "Fruit{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", power='" + power + '\'' +
+                ", fruitType=" + type +
+                ", characterName=" + (character != null ? character.getName() : null) +
+                '}';
+    }
 }

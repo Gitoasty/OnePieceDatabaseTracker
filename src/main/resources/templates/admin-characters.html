@@ -104,11 +104,12 @@
     </li>
   </ul>
 </nav>
-  <h1 style="text-align:center;">One Piece Characters</h1>
+<h1 style="text-align:center;">One Piece Characters</h1>
 
 <section class="form_sec">
   <div class="form_bg"></div>
-  <form class="contact-form" th:action="@{admin-characters/save}" method="post">
+  <form class="contact-form" th:action="@{/admin-characters/save}" method="post">
+    <input type="hidden" name="searchName" th:value="${searchName}" />
     <table>
       <tr>
         <td>
@@ -204,18 +205,24 @@
             <option value="Scrape">
               Scrape
             </option>
+            <option value="FindWithName">
+              Find with name
+            </option>
           </select>
         </td>
       </tr>
       <tr>
-        <td colspan="2">
-          <input type="submit" value="Add"/>
+        <td>
+          <input type="button" value="Back to All Characters" th:onclick="'window.location.href=\'' + @{/admin-characters} + '\''" />
+        </td>
+        <td>
+          <input type="submit" value="Perform"/>
         </td>
       </tr>
     </table>
   </form>
 </section>
-
+<br>
   <table id="chars" class="chars">
     <thead>
     <tr>

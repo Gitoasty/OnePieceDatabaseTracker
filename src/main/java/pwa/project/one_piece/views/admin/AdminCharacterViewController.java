@@ -8,8 +8,7 @@ import pwa.project.one_piece.service.CharacterService;
 import pwa.project.one_piece.entity.Character;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/admin-characters")
@@ -24,7 +23,6 @@ public class AdminCharacterViewController {
         model.addAttribute("characterList", characterService.getAllCharacters());
         model.addAttribute("fruitFilter", false);
         model.addAttribute("noFruitFilter", false);
-        System.out.println("a");
         return "admin-characters";
     }
 
@@ -46,6 +44,16 @@ public class AdminCharacterViewController {
         return "admin-characters";
     }
 
+    @GetMapping("/byName/{name}")
+    public String showByName(Model model, @PathVariable String name) {
+        model.addAttribute("character", new Character());
+        model.addAttribute("characterList", characterService.getCharactersByName(name));
+        model.addAttribute("fruitFilter", false);
+        model.addAttribute("noFruitFilter", false);
+        model.addAttribute("searchName", name);
+        return "admin-characters";
+    }
+
     public void scrape() {
         try {
             characterService.scrapeAndSaveCharacters();
@@ -61,7 +69,8 @@ public class AdminCharacterViewController {
             @RequestParam(required = false) String episodeIntroduced,
             @RequestParam String yearIntroduced,
             @RequestParam(required = false) String note,
-            @RequestParam String option
+            @RequestParam String option,
+            @RequestParam(required = false) String searchName
     ) {
 
         switch (option) {
@@ -74,35 +83,34 @@ public class AdminCharacterViewController {
                     character.setYearIntroduced(yearIntroduced);
                     character.setNote(note);
 
-                    character.setMaster(name.contains("Marshall D."));
                     characterService.save(character);
                 }
                 break;
             case "Patch":
-                Character character = characterService.getCharacterByName(name);
-                if (character == null) {
+                Optional<Character> character = characterService.getCharacterByName(name);
+                if (character.isEmpty()) {
                     return "redirect:/admin-characters";
                 }
 
                 if (name != null && !name.isEmpty()) {
-                    character.setName(name);
+                    character.get().setName(name);
                 } else {
                     return "redirect:/admin-characters";
                 }
                 if (chapterIntroduced != null && !chapterIntroduced.isEmpty()) {
-                    character.setChapterIntroduced(chapterIntroduced);
+                    character.get().setChapterIntroduced(chapterIntroduced);
                 }
                 if (episodeIntroduced != null && !episodeIntroduced.isEmpty()) {
-                    character.setEpisodeIntroduced(episodeIntroduced);
+                    character.get().setEpisodeIntroduced(episodeIntroduced);
                 }
                 if (yearIntroduced != null && !yearIntroduced.isEmpty() && yearIntroduced.matches("^[1-9]\\d*$")) {
-                    character.setYearIntroduced(yearIntroduced);
+                    character.get().setYearIntroduced(yearIntroduced);
                 }
                 if (note != null && !note.isEmpty()) {
-                    character.setNote(note);
+                    character.get().setNote(note);
                 }
 
-                characterService.save(character);
+                characterService.save(character.get());
                 break;
             case "Delete":
                 characterService.delete(name);
@@ -110,8 +118,17 @@ public class AdminCharacterViewController {
             case "Scrape":
                 scrape();
                 break;
+            case "FindWithName":
+                if (name != null && !name.isEmpty()) {
+                    return "redirect:/admin-characters/byName/" + name;
+                }
             default:
                 break;
+        }
+
+        // If we have a search context, redirect back to the filtered view
+        if (searchName != null && !searchName.isEmpty()) {
+            return "redirect:/admin-characters/byName/" + searchName;
         }
 
         return "redirect:/admin-characters";

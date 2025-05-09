@@ -23,6 +23,4 @@ public interface CharacterRepository extends JpaRepository<Character, Integer> {
     List<Character> findCharactersWithoutFruits();
 
     void deleteByName(String name);
-
-    Character getByName(String name);
 }

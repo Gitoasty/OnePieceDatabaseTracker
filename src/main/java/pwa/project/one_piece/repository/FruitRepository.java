@@ -11,7 +11,11 @@ public interface FruitRepository extends JpaRepository<Fruit, Integer> {
 
     List<Fruit> findByNameIgnoreCase(String name);
 
+    Fruit findByName(String name);
+
     List<Fruit> findByCharacterIsNotNull();
 
     List<Fruit> findByCharacterIsNull();
+
+    void deleteByName(String name);
 }

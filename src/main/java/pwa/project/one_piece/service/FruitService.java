@@ -1,9 +1,11 @@
 package pwa.project.one_piece.service;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pwa.project.one_piece.entity.Character;
 import pwa.project.one_piece.entity.Fruit;
+import pwa.project.one_piece.entity.FruitType;
 import pwa.project.one_piece.repository.CharacterRepository;
 import pwa.project.one_piece.repository.FruitRepository;
 
@@ -18,22 +20,44 @@ public class FruitService {
     @Autowired
     private CharacterRepository characterRepository;
 
-    public Fruit save(Fruit fruit) {
-        return fruitRepository.save(fruit);
+    @Transactional
+    public void save(Fruit fruit) {
+        if (fruitRepository.findByNameIgnoreCase(fruit.getName()).isEmpty()) {
+            fruitRepository.save(fruit);
+        }
     }
 
-    public Fruit assignFruitToUser(Integer characterId, Fruit fruit) {
-        Character character = characterRepository.findById(characterId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+    @Transactional
+    private void associateFruitWithCharacter(Fruit fruit, String characterName) {
+        Optional<Character> characterOpt = characterRepository.findByName(characterName);
 
-        if (!character.masterGetter() && !character.getFruits().isEmpty()) {
-            throw new IllegalStateException("Characters can only use one fruit!!!");
+        if (characterOpt.isPresent()) {
+            Character character = characterOpt.get();
+
+            if (character.masterGetter() || character.getFruits().isEmpty()) {
+                if (fruit.getCharacter() != null && !fruit.getCharacter().equals(character)) {
+                    Character oldCharacter = fruit.getCharacter();
+                    oldCharacter.getFruits().remove(fruit);
+                }
+
+                fruit.setCharacter(character);
+                if (!character.getFruits().contains(fruit)) {
+                    character.getFruits().add(fruit);
+                }
+            }
         }
+    }
 
-        fruit.setCharacter(character);
-        character.getFruits().add(fruit);
+    @Transactional
+    public void updateFruitCharacter(Fruit fruit, String characterName) {
+        try {
+            associateFruitWithCharacter(fruit, characterName);
+        } catch (Exception ignored) {}
+    }
 
-        return fruitRepository.save(fruit);
+    @Transactional
+    public void update(Fruit fruit) {
+        fruitRepository.save(fruit);
     }
 
     public List<Fruit> getAllFruits() {
@@ -56,7 +80,37 @@ public class FruitService {
         return fruitRepository.findByCharacterIsNull();
     }
 
-    public void delete(Integer id) {
-        fruitRepository.deleteById(id);
+    @Transactional
+    public void delete(String name) {
+        Fruit fruit = fruitRepository.findByName(name);
+        if (fruit != null) {  // Add null check
+            if (fruit.getCharacter() != null) {
+                Character character = fruit.getCharacter();
+                character.getFruits().remove(fruit);
+                fruit.setCharacter(null);
+            }
+            fruitRepository.deleteByName(name);
+        }
+    }
+
+    @Transactional
+    public void addFruit(String fruitName, String fruitPower,
+                          String awakened, String weakness,
+                          FruitType fruitType, String characterName) {
+
+        if (fruitRepository.findByNameIgnoreCase(fruitName).isEmpty()) {
+            Fruit fruit = new Fruit();
+            fruit.setName(fruitName);
+            fruit.setPower(fruitPower);
+            fruit.setAwakened(awakened);
+            fruit.setWeakness(weakness);
+            fruit.setType(fruitType);
+
+            if (characterName != null && !characterName.trim().isEmpty()) {
+                associateFruitWithCharacter(fruit, characterName);
+            }
+
+            fruitRepository.save(fruit);
+        }
     }
 }

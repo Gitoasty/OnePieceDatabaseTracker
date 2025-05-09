@@ -23,10 +23,12 @@ public class CharacterService {
     @Autowired
     private CharacterRepository characterRepository;
 
-    public Character save(Character character) {
+    public void save(Character character) {
         character.setMaster("Marshall D".equalsIgnoreCase(character.getName()));
 
-        return characterRepository.save(character);
+        if (characterRepository.findByNameContainingIgnoreCase(character.getName()).isEmpty()) {
+            characterRepository.save(character);
+        }
     }
 
     public Character patch(Character character) {
@@ -41,10 +43,6 @@ public class CharacterService {
         return characterRepository.save(character);
     }
 
-    public Optional<Character> getCharacterById(Integer id) {
-        return characterRepository.findById(id);
-    }
-
     public List<Character> getAllCharacters() {
         return characterRepository.findAll().stream().sorted().collect(Collectors.toList());
     }
@@ -53,8 +51,8 @@ public class CharacterService {
         return characterRepository.findByNameContainingIgnoreCase(partialName);
     }
 
-    public Character getCharacterByName(String name) {
-        return characterRepository.getByName(name);
+    public Optional<Character> getCharacterByName(String name) {
+        return characterRepository.findByName(name);
     }
 
     @Transactional

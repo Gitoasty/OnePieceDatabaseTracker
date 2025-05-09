@@ -2,27 +2,52 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>One Piece Characters</title>
-    <style>
-        table {
-          width: 80%;
-          margin: 20px auto;
-          border-collapse: collapse;
-        }
-        th, td {
-          padding: 12px;
-          border: 1px solid #ccc;
-          text-align: left;
-        }
-        th {
-          background-color: #f4a261;
-        }
-        tr:nth-child(even) {
-          background-color: #fdf5e6;
-        }
-    </style>
+    <meta name="title" content="Contacts">
+    <meta name="keywords" content="One Piece, Fruit, Devil fruit">
+    <meta name="author" content="Matej Miklin">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>One Piece Fruits</title>
+    <link rel="icon" type="image/png" th:href="@{/images/icon.png}">
+    <link rel="stylesheet" media="screen"  th:href="@{/css/pretty.css}">
 </head>
-<body class="main">
+<body>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const optionSelect = document.getElementById("option");
+      const name = document.getElementById("name");
+      const power = document.getElementById("power");
+      const awakened = document.getElementById("awakened");
+      const weakness = document.getElementById("weakness");
+      const fruitType = document.getElementById("fruitType");
+      const character = document.getElementById("character");
+
+      function updateRequiredFields() {
+        const action = optionSelect.value;
+
+        name.required = false;
+        power.required = false;
+        awakened.required = false;
+        weakness.required = false;
+        fruitType.required = false;
+        character.required = false;
+
+
+        if (action === "Add") {
+          name.required = true;
+          power.required = true;
+          fruitType.required = true;
+        } else if (action === "Patch") {
+          name.required = true;
+        } else if (action === "Delete") {
+          name.required = true;
+        } else if (action === "Scrape") {}
+      }
+
+      optionSelect.addEventListener("change", updateRequiredFields);
+
+      updateRequiredFields();
+    });
+</script>
 <header class="head">
     <div id="banner"></div>
     <div class="butts" id="butts">
@@ -54,18 +79,168 @@
         </div>
     </div>
 </header>
-<a th:if="${!userFilter}" href="/admin-fruits/with-user">
-    Fruits with users
-</a>
-<a th:if="${!noUserFilter}" href="/admin-fruits/without-users">
-    Fruits without users
-</a>
-<a th:if="${userFilter or noUserFilter}" href="/admin-fruits">
-    Show all fruits
-</a>
+<nav id="odanav">
+    <ul>
+        <li>
+            <div>
+                <a th:if="${!userFilter}" href="/admin-fruits/with-user">
+                    Fruits with users
+                </a>
+            </div>
+        </li>
+        <li>
+            <div>
+                <a th:if="${!noUserFilter}" href="/admin-fruits/without-users">
+                    Fruits without users
+                </a>
+            </div>
+        </li>
+        <li>
+            <div>
+                <a th:if="${userFilter == true or noUserFilter == true}" href="/admin-fruits">
+                    Show all fruits
+                </a>
+            </div>
+        </li>
+    </ul>
+</nav>
 <h1 style="text-align:center;">Devil Fruits</h1>
 
-<table id="fruits">
+<section class="form_sec">
+    <div class="form_bg"></div>
+    <form class="contact-form" th:action="@{/admin-fruits/save}" method="post">
+        <input type="hidden" name="searchName" th:value="${searchName}" />
+        <table>
+            <tr>
+                <td>
+                    <div>
+                        <strong>
+                            <label>
+                                Name:
+                            </label>
+                        </strong>
+                    </div>
+                </td>
+                <td>
+                    <input type="text" name="name" id="name"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <strong>
+                            <label>
+                                Power:
+                            </label>
+                        </strong>
+                    </div>
+                </td>
+                <td>
+                    <input type="text" name="power" id="power"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <strong>
+                            <label>
+                                Awakened:
+                            </label>
+                        </strong>
+                    </div>
+                </td>
+                <td>
+                    <input type="text" name="awakened" id="awakened"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <strong>
+                            <label>
+                                Weakness:
+                            </label>
+                        </strong>
+                    </div>
+                </td>
+                <td>
+                    <input type="text" name="weakness" id="weakness"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <strong>
+                            <label>
+                                Fruit type:
+                            </label>
+                        </strong>
+                    </div>
+                </td>
+                <td>
+                    <select id="fruitType" name="fruitType">
+                        <option th:each="type : ${T(pwa.project.one_piece.entity.FruitType).values()}"
+                                th:value="${type}"
+                                th:text="${type}">
+                        </option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <strong>
+                            <label>
+                                Character:
+                            </label>
+                        </strong>
+                    </div>
+                </td>
+                <td>
+                    <input type="text" name="character" id="character" placeholder="'reset' for removing"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <strong>
+                            <label>
+                                Action to perform:
+                            </label>
+                        </strong>
+                    </div>
+                </td>
+                <td>
+                    <select id="option" name="option" required>
+                        <option value="Add" selected>
+                            Add
+                        </option>
+                        <option value="Patch">
+                            Update
+                        </option>
+                        <option value="Delete">
+                            Delete
+                        </option>
+                        <option value="FindWithName">
+                            Find with name
+                        </option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="button" value="Back to All Fruits" th:onclick="'window.location.href=\'' + @{/admin-fruits} + '\''" />
+                </td>
+                <td>
+                    <input type="submit" value="Perform"/>
+                </td>
+            </tr>
+        </table>
+    </form>
+</section>
+<br>
+
+<table id="chars" class="chars">
     <thead>
     <tr>
         <th>Name</th>
@@ -83,9 +258,15 @@
         <td th:text="${fruit.getAwakened()}">Turns the ground to rubber</td>
         <td th:text="${fruit.getWeakness()}">Blades</td>
         <td th:text="${fruit.getType()}">Paramecia</td>
-        <td th:text="${fruit.getCharacter()}">Luffy</td>
+        <td th:text="${fruit.character != null ? fruit.getCharacter().getName() : '—'}">Luffy</td>
     </tr>
     </tbody>
 </table>
+
+<footer>
+    <h3>
+        Matej Miklin, 0246122414
+    </h3>
+</footer>
 </body>
 </html>
