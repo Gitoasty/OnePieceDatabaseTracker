@@ -23,29 +23,6 @@
 //
 //    Logger logger = LoggerFactory.getLogger(CharacterRestController.class);
 //
-//    @PostMapping("/save")
-//    public ResponseEntity<Character> save(@RequestBody Character character) {
-//        characterService.save(character);
-//        logger.info("Character saved successfully!");
-//        return ResponseEntity.status(HttpStatus.CREATED).body(character);
-//    }
-//
-//    @PostMapping("/scrape")
-//    public List<Character> scrape() {
-//        try {
-//            return characterService.scrapeAndSaveCharacters();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            return new ArrayList<Character>();
-//        }
-//    }
-//
-//    @PatchMapping("/patch")
-//    public ResponseEntity<Character> patch(@RequestBody Character character) {
-//        characterService.patch(character);
-//        logger.info("Character patched successfully!");
-//        return ResponseEntity.status(HttpStatus.ACCEPTED).body(character);
-//    }
 //
 //    @GetMapping("/all")
 //    public List<Character> findAll() {
@@ -63,22 +40,5 @@
 //    @GetMapping("/name/{name}")
 //    public List<Character> findAllWithName(@PathVariable String name) {
 //        return characterService.getCharactersByName(name);
-//    }
-//
-//    @GetMapping("/withFruits")
-//    public List<Character> findAllWithFruits() {
-//        return characterService.findWithFruit();
-//    }
-//
-//    @GetMapping("/withoutFruits")
-//    public List<Character> findAllWithoutFruits() {
-//        return characterService.findWithoutFruit();
-//    }
-//
-//    @DeleteMapping("/delete/{id}")
-//    @ResponseStatus(HttpStatus.NO_CONTENT)
-//    public void delete(@PathVariable Integer id) {
-//        logger.info("Deleted character with id: " + id);
-//        characterService.delete(id);
 //    }
 //}

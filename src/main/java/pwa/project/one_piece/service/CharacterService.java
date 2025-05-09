@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CharacterService {
@@ -45,7 +46,7 @@ public class CharacterService {
     }
 
     public List<Character> getAllCharacters() {
-        return characterRepository.findAll();
+        return characterRepository.findAll().stream().sorted().collect(Collectors.toList());
     }
 
     public List<Character> getCharactersByName(String partialName) {
@@ -82,19 +83,12 @@ public class CharacterService {
        Element table = doc.selectFirst("table.fandom-table.sortable");
 
         Elements tables = doc.select("table");
-        System.out.println("Total tables found: " + tables.size());
-
-        for (Element t : tables) {
-            System.out.println("Table classes: " + t.className());
-        }
 
         if (table != null) {
-            System.out.println("a");
             Elements rows = table.select("tr");
 
             for (int i = 1; i < rows.size(); i++) { // skip header row
                 Elements cols = rows.get(i).select("td");
-                System.out.println(cols.size());
 
                 if (cols.size() >= 6) {
                     String name = cols.get(1).text();

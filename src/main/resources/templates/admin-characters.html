@@ -40,7 +40,7 @@
         name.required = true;
       } else if (action === "Delete") {
         name.required = true;
-      }
+      } else if (action === "Scrape") {}
     }
 
     optionSelect.addEventListener("change", updateRequiredFields);
@@ -200,6 +200,9 @@
             </option>
             <option value="Delete">
               Delete
+            </option>
+            <option value="Scrape">
+              Scrape
             </option>
           </select>
         </td>

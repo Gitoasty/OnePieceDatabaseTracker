@@ -7,6 +7,10 @@ import org.springframework.web.bind.annotation.*;
 import pwa.project.one_piece.service.CharacterService;
 import pwa.project.one_piece.entity.Character;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 @Controller
 @RequestMapping("/admin-characters")
 public class AdminCharacterViewController {
@@ -20,6 +24,7 @@ public class AdminCharacterViewController {
         model.addAttribute("characterList", characterService.getAllCharacters());
         model.addAttribute("fruitFilter", false);
         model.addAttribute("noFruitFilter", false);
+        System.out.println("a");
         return "admin-characters";
     }
 
@@ -41,8 +46,16 @@ public class AdminCharacterViewController {
         return "admin-characters";
     }
 
+    public void scrape() {
+        try {
+            characterService.scrapeAndSaveCharacters();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @PostMapping("/save")
-    public String createCharacter(
+    public String manipulateCharacter(
             @RequestParam String name,
             @RequestParam(required = false) String chapterIntroduced,
             @RequestParam(required = false) String episodeIntroduced,
@@ -93,6 +106,9 @@ public class AdminCharacterViewController {
                 break;
             case "Delete":
                 characterService.delete(name);
+                break;
+            case "Scrape":
+                scrape();
                 break;
             default:
                 break;
