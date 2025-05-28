@@ -1,6 +1,5 @@
 package pwa.project.one_piece.views.admin;
 
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,7 +11,6 @@ import pwa.project.one_piece.service.CharacterService;
 import pwa.project.one_piece.service.FruitService;
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/admin-fruits")
