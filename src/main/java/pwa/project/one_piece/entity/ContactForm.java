@@ -4,6 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * <h1>
+ *     Custom class for handling contact forms
+ * </h1>
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

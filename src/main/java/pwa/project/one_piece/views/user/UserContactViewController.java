@@ -15,6 +15,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pwa.project.one_piece.entity.ContactForm;
 
+/**
+ * <h1>
+ *     Controller class for user contact
+ * </h1>
+ */
 @Controller
 @RequestMapping("user-contact")
 public class UserContactViewController {
@@ -24,12 +29,30 @@ public class UserContactViewController {
     @Value("${mailjet.api.secret}")
     String apiSecret;
 
+    /**
+     * <h2>
+     *     Method for showing the page
+     * </h2>
+     * @param model {@link Model} from Spring framework
+     * @return {@link String} page to be displayed
+     */
     @GetMapping
     public String showCharactersPage(Model model) {
         model.addAttribute("contactForm", new ContactForm());
         return "user-contact";
     }
 
+    /**
+     * <h2>
+     *     Method for sending contact mail
+     * </h2>
+     * <p>
+     *     Uses Mailjet API for sending contact emails to preset contact email address.
+     * </p>
+     * @param form {@link ContactForm} object describing contact form
+     * @return {@link String} page to be displayed
+     * @throws MailjetException in case sending email fails
+     */
     @PostMapping("/send-email")
     public String sendContactForm(@ModelAttribute ContactForm form) throws MailjetException {
         String to = "matej.miklin12@gmail.com";

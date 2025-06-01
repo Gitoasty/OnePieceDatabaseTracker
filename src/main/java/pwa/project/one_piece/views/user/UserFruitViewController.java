@@ -12,6 +12,9 @@ import pwa.project.one_piece.service.FruitService;
 
 import java.util.List;
 
+/**
+ * Controller class for user fruits
+ */
 @Controller
 @RequestMapping("/user-fruits")
 public class UserFruitViewController {
@@ -21,6 +24,13 @@ public class UserFruitViewController {
     @Autowired
     private CharacterService characterService;
 
+    /**
+     * <h2>
+     *     Method for showing the page
+     * </h2>
+     * @param model {@link Model} from Spring framework
+     * @return {@link String} page to be displayed
+     */
     @GetMapping
     public String showCharactersPage(Model model) {
         model.addAttribute("fruitList", fruitService.getAllFruits());
@@ -29,6 +39,16 @@ public class UserFruitViewController {
         return "user-fruits";
     }
 
+    /**
+     * <h2>
+     *     Method for filtered fruits
+     * </h2>
+     * <p>
+     *     Displays fruits which have users.
+     * </p>
+     * @param model {@link Model} from Spring framework
+     * @return {@link String} page to be displayed
+     */
     @GetMapping("/with-user")
     public String showFruitUsers(Model model) {
         model.addAttribute("fruitList", fruitService.getFruitsWithUsers());
@@ -37,6 +57,16 @@ public class UserFruitViewController {
         return "user-fruits";
     }
 
+    /**
+     * <h2>
+     *     Method for filtered fruits
+     * </h2>
+     * <p>
+     *     Displays fruits which don't have users.
+     * </p>
+     * @param model {@link Model} from Spring framework
+     * @return {@link String} page to be displayed
+     */
     @GetMapping("/without-users")
     public String showNonFruitUsers(Model model) {
         model.addAttribute("fruitList", fruitService.getFruitsWithoutUsers());
@@ -45,6 +75,17 @@ public class UserFruitViewController {
         return "user-fruits";
     }
 
+    /**
+     * <h2>
+     *     Method for displaying filtered page
+     * </h2>
+     * <p>
+     *     Filters fruits whose names contain given String
+     * </p>
+     * @param model {@link Model} from Spring framework
+     * @param name {@link String} substring of fruit name
+     * @return {@link String} page to be displayed
+     */
     @GetMapping("/byName/{name}")
     public String showByName(Model model, @PathVariable String name) {
         model.addAttribute("fruit", new Fruit());
@@ -55,72 +96,25 @@ public class UserFruitViewController {
         return "user-fruits";
     }
 
+    /**
+     * <h2>
+     *     Method for performing fruit actions
+     * </h2>
+     * <p>
+     *     Method receives parameters by which to create fruit and perform selected action.
+     *     Action depends on the option parameter passed.
+     * </p>
+     * @param name {@link String} name of devil fruit
+     * @param searchName {@link String} stored search name
+     * @return {@link String} page to be displayed
+     */
     @PostMapping("/save")
     public String addFruit(
             @RequestParam String name,
-            @RequestParam String power,
-            @RequestParam(required = false) String awakened,
-            @RequestParam(required = false) String weakness,
-            @RequestParam FruitType fruitType,
-            @RequestParam(required = false) String character,
-            @RequestParam String option,
             @RequestParam(required = false) String searchName
     ) {
-        switch (option) {
-            case "Add":
-                if (!name.isEmpty() && !power.isEmpty() && fruitType != null) {
-                    // No longer requiring awakened to be non-empty
-                    fruitService.addFruit(name, power, awakened, weakness, fruitType, character);
-                }
-                break;
-            case "Patch":
-                List<Fruit> fruitList = fruitService.getFruitByName(name);
-                if (fruitList.isEmpty()) {
-                    return "redirect:/user-fruits";
-                }
-
-                Fruit fruit = fruitList.getFirst();
-
-                if (name == null || name.isEmpty()) {
-                    return "redirect:/user-fruits";
-                }
-
-                fruit.setName(name);
-
-                if (power != null && !power.isEmpty()) {
-                    fruit.setPower(power);
-                }
-
-                fruit.setAwakened(awakened);
-                fruit.setWeakness(weakness);
-
-                if (fruitType != null) {
-                    fruit.setType(fruitType);
-                }
-
-                if (character != null) {
-                    if (character.equals("reset")) {
-                        if (fruit.getCharacter() != null) {
-                            Character oldCharacter = fruit.getCharacter();
-                            oldCharacter.getFruits().remove(fruit);
-                            fruit.setCharacter(null);
-                        }
-                    } else if (!character.trim().isEmpty()) {
-                        fruitService.updateFruitCharacter(fruit, character);
-                    }
-                }
-
-                fruitService.update(fruit);
-                break;
-            case "Delete":
-                fruitService.delete(name);
-                break;
-            case "FindWithName":
-                if (name != null && !name.isEmpty()) {
-                    return "redirect:/user-fruits/byName/" + name;
-                }
-            default:
-                break;
+        if (name != null && !name.isEmpty()) {
+            return "redirect:/user-fruits/byName/" + name;
         }
 
         if (searchName != null && !searchName.isEmpty()) {

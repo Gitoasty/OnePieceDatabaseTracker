@@ -12,6 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * <h1>
+ *     Entity class describing character
+ * </h1>
+ */
 @Entity
 @Data
 @AllArgsConstructor
@@ -45,10 +50,29 @@ public class Character implements Comparable<Character> {
     @Column(name="fruits", nullable = true)
     private List<Fruit> fruits = new ArrayList<>();
 
+    /**
+     * <h2>
+     *     Custom getter for master property
+     * </h2>
+     * <p>
+     *     Written because lombok getter was giving incorrect returns
+     * </p>
+     * @return boolean value, true if character is master
+     */
     public boolean masterGetter() {
         return master;
     }
 
+    /**
+     * <h2>
+     *     Custom compareTo method for alphabetical sorting
+     * </h2>
+     * <p>
+     *     Created for proper handling of alphabetical sorting. Properly handles uncommon characters (umlauts and alike)
+     * </p>
+     * @param o the object to be compared.
+     * @return int value, 0 or 1, depends on which is first
+     */
     @Override
     public int compareTo(@NotNull Character o) {
         if (this.name == null) return (o.getName() == null) ? 0 : -1;

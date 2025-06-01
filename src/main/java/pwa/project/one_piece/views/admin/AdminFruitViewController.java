@@ -12,6 +12,11 @@ import pwa.project.one_piece.service.FruitService;
 
 import java.util.List;
 
+/**
+ * <h1>
+ *     Controller class for admin fruits page
+ * </h1>
+ */
 @Controller
 @RequestMapping("/admin-fruits")
 public class AdminFruitViewController {
@@ -21,6 +26,13 @@ public class AdminFruitViewController {
     @Autowired
     private CharacterService characterService;
 
+    /**
+     * <h2>
+     *     Method for showing the page
+     * </h2>
+     * @param model {@link Model} from Spring framework
+     * @return {@link String} page to be displayed
+     */
     @GetMapping
     public String showCharactersPage(Model model) {
         model.addAttribute("fruitList", fruitService.getAllFruits());
@@ -29,22 +41,53 @@ public class AdminFruitViewController {
         return "admin-fruits";
     }
 
+    /**
+     * <h2>
+     *     Method for filtered fruits
+     * </h2>
+     * <p>
+     *     Displays fruits which have users.
+     * </p>
+     * @param model {@link Model} from Spring framework
+     * @return {@link String} page to be displayed
+     */
     @GetMapping("/with-user")
-    public String showFruitUsers(Model model) {
+    public String showFruitsWithUsers(Model model) {
         model.addAttribute("fruitList", fruitService.getFruitsWithUsers());
         model.addAttribute("userFilter", true);
         model.addAttribute("noUserFilter", false);
         return "admin-fruits";
     }
 
+    /**
+     * <h2>
+     *     Method for filtered fruits
+     * </h2>
+     * <p>
+     *     Displays fruits which don't have users.
+     * </p>
+     * @param model {@link Model} from Spring framework
+     * @return {@link String} page to be displayed
+     */
     @GetMapping("/without-users")
-    public String showNonFruitUsers(Model model) {
+    public String showFruitsWithoutUsers(Model model) {
         model.addAttribute("fruitList", fruitService.getFruitsWithoutUsers());
         model.addAttribute("userFilter", false);
         model.addAttribute("noUserFilter", true);
         return "admin-fruits";
     }
 
+    /**
+     * <h2>
+     *     Method for displaying filtered page
+     * </h2>
+     * <p>
+     *     Filters fruits whose names contain given String
+     * </p>
+     * @param model {@link Model} from Spring framework
+     * @param name {@link String} substring of fruit name
+     * @return {@link String} page to be displayed
+     */
     @GetMapping("/byName/{name}")
     public String showByName(Model model, @PathVariable String name) {
         model.addAttribute("fruit", new Fruit());
@@ -55,6 +98,24 @@ public class AdminFruitViewController {
         return "admin-fruits";
     }
 
+    /**
+     * <h2>
+     *     Method for performing fruit actions
+     * </h2>
+     * <p>
+     *     Method receives parameters by which to create fruit and perform selected action.
+     *     Action depends on the option parameter passed.
+     * </p>
+     * @param name {@link String} name of devil fruit
+     * @param power {@link String} power of devil fruit
+     * @param awakened {@link String} awakened power of devil fruit
+     * @param weakness {@link String} weakness of devil fruit
+     * @param fruitType {@link FruitType} type of devil fruit
+     * @param character {@link String} name of character
+     * @param option {@link String} action to be performed
+     * @param searchName {@link String} stored search name
+     * @return {@link String} page to be displayed
+     */
     @PostMapping("/save")
     public String addFruit(
             @RequestParam String name,

@@ -24,6 +24,11 @@ import pwa.project.one_piece.service.AppUserService;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
+/**
+ * <h1>
+ *     Class for configuring Spring Security
+ * </h1>
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -31,6 +36,18 @@ public class SecurityConfig {
     @Autowired
     private AppUserService appUserService;
 
+    /**
+     * <h2>
+     *     Method for setting role permissions for api patterns
+     * </h2>
+     * <p>
+     *     Gives permission to both roles sending GET requests to /api/** patterns.
+     *     Sets permissions for other requests for admin role.
+     * </p>
+     * @param http {@link HttpSecurity} for setting permissions
+     * @return {@link SecurityFilterChain} used for filtering permissions
+     * @throws Exception in case of error in one of the steps
+     */
     @Bean
     @Order(1)
     @ConditionalOnProperty(value = "module.enabled", havingValue = "basic", matchIfMissing = true)
@@ -50,12 +67,23 @@ public class SecurityConfig {
                 .build();
     }
 
+    /**
+     * <h2>
+     *     Secondary method for setting role permissions for api patterns
+     * </h2>
+     * <p>
+     *     Permits direct access to folders with css and images. Allows everyone to access the login page and logout requests.
+     * </p>
+     * @param http {@link HttpSecurity} for setting permissions
+     * @return {@link SecurityFilterChain} used for filtering permissions
+     * @throws Exception in case of error in one of the steps
+     */
     @Bean
     @Order(2)
     public SecurityFilterChain formLoginChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers("/css/**", "/js/**", "/images/**", "/webjars/**").permitAll()
-                .requestMatchers("/login", "/register").permitAll()
+                .requestMatchers("/css/**", "/images/**").permitAll()
+                .requestMatchers("/login").permitAll()
                 .anyRequest().authenticated()
         );
 
@@ -67,22 +95,35 @@ public class SecurityConfig {
 
         http.logout(logout -> logout.permitAll());
 
-        // Add our custom filter before the standard authentication filter
-        http.addFilterBefore(createUserIfNotExistsFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new CreateUserIfNotExistsFilter(appUserService, passwordEncoder()), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
+    /**
+     * <h2>
+     *     Method for creating custom success handler
+     * </h2>
+     * <p>
+     *     Calls the constructor for CustomLoginSuccessHandler and returns it
+     * </p>
+     * @return {@link CustomLoginSuccessHandler} to be used in the filter chain
+     */
     @Bean
     public AuthenticationSuccessHandler customLoginSuccessHandler() {
         return new CustomLoginSuccessHandler();
     }
 
-    @Bean
-    public CreateUserIfNotExistsFilter createUserIfNotExistsFilter() {
-        return new CreateUserIfNotExistsFilter(appUserService, passwordEncoder());
-    }
-
+    /**
+     * <h2>
+     *     Custom authentication provider
+     * </h2>
+     * <p>
+     *     Creates DaoAuthenticationProvider and passes in the {@link CustomUserDetailsService} in its constructor.
+     *     Sets the password encoder to the custom one and returns the authentication provider.
+     * </p>
+     * @return {@link DaoAuthenticationProvider} with custom parameters
+     */
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -91,11 +132,15 @@ public class SecurityConfig {
         return authProvider;
     }
 
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
-        return authConfig.getAuthenticationManager();
-    }
-
+    /**
+     * <h2>
+     *     Method for creating password encoder
+     * </h2>
+     * <p>
+     *     Creates a BCryptPasswordEncoder and returns it
+     * </p>
+     * @return {@link BCryptPasswordEncoder} to be set as the password encoder
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

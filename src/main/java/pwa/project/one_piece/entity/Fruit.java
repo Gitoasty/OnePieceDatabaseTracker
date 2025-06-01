@@ -3,6 +3,11 @@ package pwa.project.one_piece.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+/**
+ * <h1>
+ *     Entity class for describing devil fruits
+ * </h1>
+ */
 @Entity
 @Data
 public class Fruit {
@@ -30,6 +35,15 @@ public class Fruit {
     @JoinColumn(name="character", nullable = true)
     private Character character;
 
+    /**
+     * <h2>
+     *     Custom toString method
+     * </h2>
+     * <p>
+     *     Creates a custom string depending on object properties
+     * </p>
+     * @return {@link String} describing object
+     */
     @Override
     public String toString() {
         return "Fruit{" +

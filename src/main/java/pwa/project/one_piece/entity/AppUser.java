@@ -3,6 +3,11 @@ package pwa.project.one_piece.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+/**
+ * <h1>
+ *     Entity class describing app user
+ * </h1>
+ */
 @Entity
 @Data
 @Table(name = "appUser")

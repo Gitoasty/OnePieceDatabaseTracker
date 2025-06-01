@@ -10,6 +10,11 @@ import pwa.project.one_piece.entity.Character;
 import java.io.IOException;
 import java.util.Optional;
 
+/**
+ * <h1>
+ *     Controller class for admin characters page
+ * </h1>
+ */
 @Controller
 @RequestMapping("/admin-characters")
 public class AdminCharacterViewController {
@@ -17,6 +22,13 @@ public class AdminCharacterViewController {
     @Autowired
     private CharacterService characterService;
 
+    /**
+     * <h2>
+     *     Method for showing the page
+     * </h2>
+     * @param model {@link Model} from Spring framework
+     * @return {@link String} page to be displayed
+     */
     @GetMapping
     public String showCharactersPage(Model model) {
         model.addAttribute("character", new Character());
@@ -26,6 +38,16 @@ public class AdminCharacterViewController {
         return "admin-characters";
     }
 
+    /**
+     * <h2>
+     *     Method for displaying filtered page
+     * </h2>
+     * <p>
+     *     Filters characters that have devil fruits
+     * </p>
+     * @param model {@link Model} from Spring framework
+     * @return {@link String} page to be displayed
+     */
     @GetMapping("/with-fruits")
     public String showFruitUsers(Model model) {
         model.addAttribute("character", new Character());
@@ -35,6 +57,16 @@ public class AdminCharacterViewController {
         return "admin-characters";
     }
 
+    /**
+     * <h2>
+     *     Method for displaying filtered page
+     * </h2>
+     * <p>
+     *     Filters characters that don't have devil fruits
+     * </p>
+     * @param model {@link Model} from Spring framework
+     * @return {@link String} page to be displayed
+     */
     @GetMapping("/without-fruits")
     public String showNonFruitUsers(Model model) {
         model.addAttribute("character", new Character());
@@ -44,6 +76,17 @@ public class AdminCharacterViewController {
         return "admin-characters";
     }
 
+    /**
+     * <h2>
+     *     Method for displaying filtered page
+     * </h2>
+     * <p>
+     *     Filters characters whose names contain given String
+     * </p>
+     * @param model {@link Model} from Spring framework
+     * @param name {@link String} substring of character name
+     * @return {@link String} page to be displayed
+     */
     @GetMapping("/byName/{name}")
     public String showByName(Model model, @PathVariable String name) {
         model.addAttribute("character", new Character());
@@ -54,14 +97,34 @@ public class AdminCharacterViewController {
         return "admin-characters";
     }
 
+    /**
+     * <h2>
+     *     Method for scraping characters
+     * </h2>
+     */
     public void scrape() {
         try {
             characterService.scrapeAndSaveCharacters();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        } catch (IOException ignored) {}
     }
 
+    /**
+     * <h2>
+     *     Method for performing character action
+     * </h2>
+     * <p>
+     *     Method receives parameters by which to create character and perform selected action.
+     *     Action depends on the option parameter passed.
+     * </p>
+     * @param name {@link String} character name
+     * @param chapterIntroduced {@link String} chapter introduced
+     * @param episodeIntroduced {@link String} episode introduced
+     * @param yearIntroduced {@link String} year introduced
+     * @param note {@link String} note about character
+     * @param option {@link String} option describing action to be performed
+     * @param searchName {@link String} stored search name
+     * @return {@link String} page to be displayed
+     */
     @PostMapping("/save")
     public String manipulateCharacter(
             @RequestParam String name,
@@ -110,7 +173,7 @@ public class AdminCharacterViewController {
                     character.get().setNote(note);
                 }
 
-                characterService.save(character.get());
+                characterService.patch(character.get());
                 break;
             case "Delete":
                 characterService.delete(name);
@@ -126,7 +189,6 @@ public class AdminCharacterViewController {
                 break;
         }
 
-        // If we have a search context, redirect back to the filtered view
         if (searchName != null && !searchName.isEmpty()) {
             return "redirect:/admin-characters/byName/" + searchName;
         }
