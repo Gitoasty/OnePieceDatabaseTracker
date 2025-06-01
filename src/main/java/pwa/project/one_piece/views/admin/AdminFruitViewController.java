@@ -130,7 +130,6 @@ public class AdminFruitViewController {
         switch (option) {
             case "Add":
                 if (!name.isEmpty() && !power.isEmpty() && fruitType != null) {
-                    // No longer requiring awakened to be non-empty
                     fruitService.addFruit(name, power, awakened, weakness, fruitType, character);
                 }
                 break;
